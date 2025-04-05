@@ -2,7 +2,7 @@
 
 namespace Presentation
 {
-    public class Program
+    public abstract class Program
     {
         public static void Main(string[] args)
         {
@@ -16,7 +16,7 @@ namespace Presentation
             }
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                    .UseStartup<Startup>();
     }

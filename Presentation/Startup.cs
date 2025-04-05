@@ -2,22 +2,13 @@
 using Application.Services.Abstractions;
 using Data.Repository;
 using Data.Repository.Abstractions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace Presentation
 {
-    public class Startup
+    public class Startup(IConfiguration configuration)
     {
-        public IConfiguration Configuration { get; }
-
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public IConfiguration Configuration { get; } = configuration;
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

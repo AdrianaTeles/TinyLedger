@@ -4,36 +4,30 @@ using Domain.Model;
 
 namespace Application.Services
 {
-    public class LedgerService : ILedgerService
+    public class LedgerService(ITransactionRepository repository) : ILedgerService
     {
-        private readonly ITransactionRepository _repository;
-
-        public LedgerService(ITransactionRepository repository)
+        public void RecordTransaction(string customerId, TransactionType type, decimal amount)
         {
-            _repository = repository;
-        }
-
-        public void RecordTransaction(TransactionType type, decimal amount)
-        {
-            if (type == TransactionType.Withdrawal && GetBalance() < amount)
+            if (type == TransactionType.Withdrawal && GetBalance(customerId) < amount)
                 throw new InvalidOperationException("Insufficient balance.");
 
-            _repository.Add(new Transaction
+            repository.Add(new Transaction
             {
                 Type = type,
-                Amount = amount
+                Amount = amount,
+                CustomerId = customerId
             });
         }
 
-        public decimal GetBalance()
+        public decimal GetBalance(string customerId)
         {
-            var transactions = _repository.GetAll();
+            var transactions = repository.GetAll(customerId);
             return transactions.Sum(t => t.Type == TransactionType.Deposit ? t.Amount : -t.Amount);
         }
 
-        public List<Transaction> GetTransactionHistory()
+        public List<Transaction> GetTransactionHistory(string customerId)
         {
-            return _repository.GetAll();
+            return repository.GetAll(customerId);
         }
     }
 }

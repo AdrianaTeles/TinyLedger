@@ -1,33 +1,27 @@
-﻿using Application.Services.Abstractions;
+﻿using Application.DTO;
+using Application.Services.Abstractions;
 using Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
     [ApiController]
-    [Route("api/ledger")]
-    public class TransactionsController : ControllerBase
+    [Route("api/ledger/{customerId}")]
+    public class TransactionsController(ILedgerService ledgerService) : ControllerBase
     {
-        private readonly ILedgerService ledgerService;
-
-        public TransactionsController(ILedgerService ledgerService)
-        {
-            this.ledgerService = ledgerService;
-        }
-
         [HttpPost("deposit")]
-        public IActionResult Deposit([FromBody] AmountRequest request)
+        public IActionResult Deposit(string customerId, [FromBody] AmountRequest request)
         {
-            ledgerService.RecordTransaction(TransactionType.Deposit, request.Amount);
+            ledgerService.RecordTransaction(customerId, TransactionType.Deposit, request.Amount);
             return Ok();
         }
 
         [HttpPost("withdraw")]
-        public IActionResult Withdraw([FromBody] AmountRequest request)
+        public IActionResult Withdraw(string customerId, [FromBody] AmountRequest request)
         {
             try
             {
-                ledgerService.RecordTransaction(TransactionType.Withdrawal, request.Amount);
+                ledgerService.RecordTransaction(customerId, TransactionType.Withdrawal, request.Amount);
                 return Ok();
             }
             catch (InvalidOperationException ex)
@@ -37,15 +31,11 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("balance")]
-        public ActionResult<decimal> GetBalance() => ledgerService.GetBalance();
+        public ActionResult<decimal> GetBalance(string customerId) => 
+            ledgerService.GetBalance(customerId);
 
         [HttpGet("history")]
-        public ActionResult<List<Transaction>> GetHistory() => ledgerService.GetTransactionHistory();
+        public ActionResult<List<Transaction>> GetHistory(string customerId) => 
+            ledgerService.GetTransactionHistory(customerId);
     }
-
-    public class AmountRequest
-    {
-        public decimal Amount { get; set; }
-    }
-
 }

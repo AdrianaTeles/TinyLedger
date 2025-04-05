@@ -5,6 +5,6 @@ namespace Data.Repository.Abstractions
     public interface ITransactionRepository
     {
         void Add(Transaction transaction);
-        List<Transaction> GetAll();
+        List<Transaction> GetAll(string customerId);
     }
 }
