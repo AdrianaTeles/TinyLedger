@@ -12,7 +12,7 @@ namespace Presentation.Controllers
         [HttpPost("deposit")]
         public IActionResult Deposit(string customerId, [FromBody] AmountRequest request)
         {
-            ledgerService.RecordTransaction(customerId, TransactionType.Deposit, request.Amount);
+            ledgerService.RecordTransaction(customerId, TransactionType.Deposit, request);
             return Ok();
         }
 
@@ -21,7 +21,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                ledgerService.RecordTransaction(customerId, TransactionType.Withdrawal, request.Amount);
+                ledgerService.RecordTransaction(customerId, TransactionType.Withdrawal, request);
                 return Ok();
             }
             catch (InvalidOperationException ex)
@@ -29,6 +29,21 @@ namespace Presentation.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
+        [HttpPost("transfer")]
+        public IActionResult Transfer(string customerId, [FromBody] AmountRequest request)
+        {
+            try
+            {
+                ledgerService.RecordTransaction(customerId, TransactionType.Transfer, request);
+                return Ok();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
 
         [HttpGet("balance")]
         public ActionResult<decimal> GetBalance(string customerId) => 

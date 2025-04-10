@@ -7,5 +7,6 @@
         public TransactionType Type { get; set; }
         public decimal Amount { get; set; }
         public required string CustomerId { get; set; }
+        public Status Status { get; set; }
     }
 }

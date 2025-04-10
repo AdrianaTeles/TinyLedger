@@ -15,7 +15,7 @@ All routes require a `customerId` as part of the URL.
 
 **Request**
 
-`POST /api/transactions/{customerId}/deposit`
+`POST /api/ledger/{customerId}/deposit`
 
 **Body**
 ```json
@@ -30,7 +30,7 @@ All routes require a `customerId` as part of the URL.
 
 **Request**
 
-`POST /api/transactions/{customerId}/withdraw`
+`POST /api/ledger/{customerId}/withdraw`
 
 **Body**
 ```json
@@ -45,7 +45,7 @@ All routes require a `customerId` as part of the URL.
 
 **Request**
 
-`GET /api/transactions/{customerId}/balance`
+`GET /api/ledger/{customerId}/balance`
 
 ---
 
@@ -53,7 +53,7 @@ All routes require a `customerId` as part of the URL.
 
 **Request**
 
-`GET /api/transactions/{customerId}/history`
+`GET /api/ledger/{customerId}/history`
 
 
 ---

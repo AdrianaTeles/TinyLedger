@@ -1,10 +1,11 @@
-﻿using Domain.Model;
+﻿using Application.DTO;
+using Domain.Model;
 
 namespace Application.Services.Abstractions
 {
     public interface ILedgerService
     {
-        void RecordTransaction(string customerId, TransactionType type, decimal amount);
+        void RecordTransaction(string customerIdSender, TransactionType type, AmountRequest request);
         decimal GetBalance(string customerId);
         List<Transaction> GetTransactionHistory(string customerId);
     }
